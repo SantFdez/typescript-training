@@ -1,6 +1,59 @@
 // Write your types here! ✨
 
-let current = {
+export type River = RiverClearing | RiverPath | RiverStream | RiverTown;
+
+export type RiverCommon = {
+	name: string;
+	proximity: number;
+	treasure?: string;
+};
+
+export type RiverClearing = RiverCommon & {
+	type: "clearing";
+	through?: River;
+};
+
+export type RiverPath = RiverCommon & {
+	type: "path";
+	through: River;
+	shortcut?: River;
+};
+
+// export type RiverStream = RiverCommon & {
+// 	area: "middle" | "begin" | "end";
+// 	upstream?: River;
+// 	downstream?: River;
+// }
+
+export type RiverTown = RiverCommon & {
+	type: "town";
+	through?: River;
+	around?: River;
+};
+
+export type StreamCommon = RiverCommon & {
+	type: "stream";
+};
+
+export type StreamBegin = StreamCommon & {
+	downstream: River;
+	area: "begin";
+};
+
+export type StreamMiddle = StreamCommon & {
+	upstream: River;
+	downstream: River;
+	area: "middle";
+};
+
+export type StreamEnd = StreamCommon & {
+	upstream: River;
+	area: "end";
+};
+
+export type RiverStream = StreamBegin | StreamEnd | StreamMiddle;
+
+let current: River | undefined = {
 	name: "Woesong Bridge",
 	proximity: 100,
 	through: {

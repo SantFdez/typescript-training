@@ -1,14 +1,42 @@
 // Write your types here! ✨
 
+export type Motion = AllowedMotion | DeniedMotion | PendingMotion;
+export type TrialMotion = PostTrialMotion | PreTrialMotion;
+export type MotionCommon = {
+	from: "defendant" | "plaintiff";
+	reason: string;
+};
+export type PreTrialMotion = MotionCommon & {
+	step: "pre-trial";
+	classification: "dismiss" | "venue" | "suppress";
+};
+export type PostTrialMotion = MotionCommon & {
+	step: "post-trial";
+	classification: "acquittal" | "correction" | "new trial";
+};
+export type AllowedMotion = TrialMotion & {
+	status: "allowed";
+	deliberationHours: number;
+};
+export type DeniedMotion = TrialMotion & {
+	status: "denied";
+	annoyedJustice: boolean;
+	deliberationHours: number;
+};
+export type PendingMotion = TrialMotion & {
+	status: "pending";
+	estimatedDeliberationHours: number;
+};
+
 export const motions: Motion[] = [
 	{
-		annoyedJustice: true,
+		annoyedJustice: true, // DeniedMotion
 		classification: "acquittal",
-		deliberationHours: 1,
-		from: "defendant",
-		reason: "The heretofore document had dried ink on it.",
+		deliberationHours: 1, //AllowedMotion DeniedMotion
+		from: "defendant", // MotionCommon
+		reason: "The heretofore document had dried ink on it.", //MotionCommon
 		status: "denied",
-		step: "post-trial",
+		step: "post-trial", // PostTrialMotion PreTrialMotion
 	},
 	{
 		annoyedJustice: true,
@@ -29,7 +57,7 @@ export const motions: Motion[] = [
 	},
 	{
 		classification: "new trial",
-		estimatedDeliberationHours: 3,
+		estimatedDeliberationHours: 3, // PendingMotion
 		from: "defendant",
 		reason: "The duel's been accepted. There's no backing out. That's the law.",
 		status: "pending",
